@@ -283,3 +283,72 @@ int main()
     std::cout << myLastNameLetter << std::endl;
     return 0;
 }
+
+template<typename T>
+Point<T>::Point() noexcept
+    :x{ T() }, y{ T() }
+{
+    //std::cout << "Constructor\n";
+}
+
+template<typename T>
+Point<T>::Point(const T& _x, const T& _y) noexcept
+{
+    this->x = _x;
+    this->y = _y;
+    //std::cout << "Constructor with parametr\n";
+}
+
+template<typename T>
+Point<T>::Point(const Point<T>& other) noexcept
+{
+    if (this != &other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+    }
+}
+
+template<typename T>
+Point<T>::Point(Point<T>&& other) noexcept
+{
+    this->x = std::move(other.x);
+    this->y = std::move(other.y);
+    //std::cout << "Move Constructor\n";
+}
+
+template<typename T>
+Point<T>& Point<T>::operator=(const Point<T>& other) noexcept
+{
+    this->x = other.x;
+    this->y = other.y;
+    return *this;
+}
+
+template<typename T>
+Point<T>& Point<T>::operator=(Point<T>&& other) noexcept
+{
+    //std::cout << "=move\n";
+    this->x = std::move(other.x);
+    this->y = std::move(other.y);
+    return *this;
+}
+
+
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Point<T>& p)
+{
+    out << "(" << p.x << "," << p.y << ")";
+    return out;
+}
+
+template<typename T>
+T dist(const Point<T>& a, const Point<T>& b)
+{
+    T x = (a.x - b.x);
+    T y = (a.y - b.y);
+    return x * x + y * y;
+}
+
+
