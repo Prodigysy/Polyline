@@ -382,3 +382,35 @@ Polyline<T>::Polyline(Polyline<T>& p)
         points[i] = p[i];
 }
 
+template<typename T>
+Polyline<T>::Polyline(const T& m1, const T& m2, int size)
+{
+    if (size <= 0)
+        throw std::out_of_range("Index out of ranges");
+    m_size = size;
+    points = new Point<T>[m_size];
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<T> distrib(m1, m2);
+    for (int i = 0; i < m_size; i++) {
+        T randomX = distrib(gen);
+        T randomY = distrib(gen);
+        points[i] = Point<T>(randomX, randomY);
+    }
+}
+
+template<typename T>
+Polyline<T>::Polyline(const Polyline<T>& pol)
+{
+    m_size = pol.getSize();
+    points = new Point<T>[m_size];
+
+    if (points == nullptr)
+        throw std::bad_alloc;
+
+    for (int i = 0; i < m_size; i++)
+        points[i] = pol[i];
+}
+
+
