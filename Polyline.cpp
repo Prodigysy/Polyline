@@ -8,7 +8,7 @@ template <typename  T>
 struct Point
 {
     T x, y;
-    Point()noexcept/
+    Point()noexcept
         :x{ T() }, y{ T() } {}
 
     Point(const T& _x, const T& _y)noexcept
