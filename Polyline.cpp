@@ -24,3 +24,34 @@ struct Point
        Q dist(const Point<Q>& a, const Point<Q>& b);
 };
 
+template <typename T>
+class Polyline
+{
+public:
+    Polyline();
+    Polyline(int size);
+    Polyline(Polyline<T>& p);
+    Polyline(const T& m1, const T& m2, int size);
+    Polyline(const Polyline<T>& pol);
+    Polyline(Polyline<T>&& pol)noexcept;
+    ~Polyline();
+    Polyline<T>& operator + (const Point<T>& p);
+    void addPoint(const Point<T>& p);
+
+    int getSize()const;
+
+    Point<T>& operator[](int index);
+    const Point<T>& operator[](int index)const;
+    Polyline<T>& operator+(const Polyline<T>& p);
+    double length()const;
+
+    template<typename Q>
+    friend
+        std::ostream& operator << (std::ostream& out, const Polyline<Q>& pol);
+private:
+    Point<T>* points;
+    int m_size;
+
+};
+
+
