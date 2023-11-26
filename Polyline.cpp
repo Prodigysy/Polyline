@@ -413,4 +413,80 @@ Polyline<T>::Polyline(const Polyline<T>& pol)
         points[i] = pol[i];
 }
 
+template<typename T>
+Polyline<T>::Polyline(Polyline<T>&& pol)noexcept
+{
+    m_size = std::move(pol.getSize());
+    points = pol.points;
+    pol.points = nullptr;
+}
+
+template<typename T>
+Polyline<T>::~Polyline()
+{
+    delete[] points;
+}
+
+template<typename T>
+Polyline<T>& Polyline<T>::operator+(const Point<T>& p)
+{
+    Point<T>* pnts = new Point<T>[getSize() + 1];
+
+    if (pnts == nullptr)
+        throw std::bad_alloc();
+
+    for (int i = 0; i < getSize(); i++)
+    {
+        pnts[i] = points[i];
+    }
+
+    pnts[getSize()] = p;
+    delete[]points;
+    points = pnts;
+    m_size++;
+    return *this;
+}
+
+template<typename T>
+void Polyline<T>::addPoint(const Point<T>& p)
+{
+
+    Point<T>* pnts = new Point<T>[getSize() + 1];
+
+    if (pnts == nullptr)
+        throw std::bad_alloc();
+
+    for (int i = 0; i < getSize(); i++)
+    {
+        pnts[i] = points[i];
+    }
+
+    pnts[getSize()] = p;
+    delete[]points;
+    points = pnts;
+    m_size++;
+}
+
+template<typename T>
+int Polyline<T>::getSize() const
+{
+    return m_size;
+}
+
+template<typename T>
+Point<T>& Polyline<T>::operator[](int index)
+{
+    if (index < 0 || index> getSize())
+        throw std::out_of_range("Index out of range");
+    return points[index];
+}
+
+template<typename T>
+const Point<T>& Polyline<T>::operator[](int index) const
+{
+    if (index < 0 || index> getSize())
+        throw std::out_of_range("Index out of range");
+    return points[index];
+}
+
 
