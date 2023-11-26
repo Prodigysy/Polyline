@@ -489,4 +489,46 @@ const Point<T>& Polyline<T>::operator[](int index) const
     return points[index];
 }
 
+template<typename T>
+Polyline<T>& Polyline<T>::operator+(const Polyline<T>& p)
+{
+    int newSize = m_size + p.getSize();
+    Point<T>* newPoints = new Point<T>[newSize];
+    for (int i = 0; i < m_size; i++) {
+        newPoints[i] = points[i];
+    }
+
+    for (int i = 0; i < p.getSize(); i++) {
+        newPoints[m_size + i] = p[i];
+    }
+
+    delete[] points;
+    points = newPoints;
+    m_size = newSize;
+    return *this;
+}
+
+template<typename T>
+double Polyline<T>::length() const
+{
+    double len = 0.0;
+    for (int i = 0; i < m_size - 1; i++)
+    {
+        T len_seg = dist(points[i], points[i + 1]);
+        len += static_cast<double>(sqrt(len_seg));
+    }
+    return len;
+}
+
+template<typename Q>
+std::ostream& operator<<(std::ostream& out, const Polyline<Q>& pol)
+{
+    out << "[ ";
+    for (int i = 0; i < pol.getSize() - 1; i++)
+        out << pol[i] << ";";
+    if (pol.getSize() > 0)
+        out << pol[static_cast<int>(pol.getSize() - 1)];
+    out << " ]";
+    return out;
+}
 
