@@ -352,3 +352,33 @@ T dist(const Point<T>& a, const Point<T>& b)
 }
 
 
+//-------------------POLYLINE IMPLEMENTATION-------------------
+template<typename T>
+Polyline<T>::Polyline()
+    :m_size{ 0 }, points{ nullptr }
+{}
+
+template<typename T>
+Polyline<T>::Polyline(int size)
+{
+    if (size <= 0)
+        throw std::out_of_range("Index out of ranges");
+    points = new Point<T>[size];
+    if (points == nullptr)
+        throw std::bad_alloc();
+    m_size = static_cast<int>(size);
+}
+
+template<typename T>
+Polyline<T>::Polyline(Polyline<T>& p)
+{
+    m_size = p.getSize();
+    points = new Point<T>[m_size];
+
+    if (points == nullptr)
+        throw std::bad_alloc();
+
+    for (int i = 0; i < m_size; i++)
+        points[i] = p[i];
+}
+
