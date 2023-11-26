@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <random>
 #include <complex>
+
 template <typename  T>
 struct Point
 {
