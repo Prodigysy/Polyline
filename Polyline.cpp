@@ -133,4 +133,59 @@ public:
 
     }
 
+    Polyline<complex<T>>& operator+(const Polyline<complex<T>>& other) {
+        int newSize = m_size + other.getSize();
+        Point<complex<T>>* newPoints = new Point<complex<T>>[newSize];
+        for (int i = 0; i < m_size; i++) {
+            newPoints[i] = points[i];
+        }
+        for (int i = 0; i < other.getSize(); i++) {
+            newPoints[m_size + i] = other.points[i];
+        }
+        delete[] points;
+        points = newPoints;
+        m_size = newSize;
+        return *this;
+    }
+
+    Polyline<complex<T>>& operator+(const Point<complex<T>>& point) {
+        Point<complex<T>>* newPoints = new Point<complex<T>>[m_size + 1];
+        for (int i = 0; i < m_size; i++) {
+            newPoints[i] = points[i];
+        }
+        newPoints[m_size] = point;
+        delete[] points;
+        points = newPoints;
+        m_size++;
+        return *this;
+    }
+
+    double length() const {
+
+        double Length = 0.0;
+
+        for (int i = 0; i < m_size - 1; i++) {
+
+            complex<T> dx = points[i + 1].x - points[i].x;
+            complex<T> dy = points[i + 1].y - points[i].y;
+            double segmentLength = 0;
+
+            segmentLength = abs(points[i + 1].x - points[i].x);
+            segmentLength += abs(points[i + 1].y - points[i].y);
+            Length += segmentLength;
+        }
+        return Length;
+    }
+
+    friend
+        std::ostream& operator<<(std::ostream& os, const Polyline<complex<T>>& polyline) {
+        for (int i = 0; i < polyline.getSize(); i++) {
+            os << "(" << polyline.points[i].x << ",  " << polyline.points[i].y << ") ";
+        }
+        return os;
+    }
+};
+
+
+
 
